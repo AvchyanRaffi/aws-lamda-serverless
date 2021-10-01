@@ -1,0 +1,69 @@
+service: serverless-restapi
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: eu-central-1
+  lambdaHashingVersion: 20201221
+
+  apiGateway:
+    apiKeys:
+      - free:
+          - dev-freekey
+    usagePlan:
+      - free:
+          quota:
+            limit: 5000
+            offset: 2
+            period: MONTH
+          throttle:
+            burstLimit: 200
+            rateLimit: 100
+
+
+functions:
+  create:
+    handler: handler.create
+    events:
+      - http:
+          path: notes
+          method: post
+          cors: true
+          private: true
+  getOne:
+    handler: handler.getOne
+    events:
+      - http:
+          path: notes/{id}
+          method: get
+          cors: true
+          private: true
+  getAll:
+    handler: handler.getAll
+    events:
+      - http:
+          path: notes
+          method: get
+          cors: true
+          private: true
+  update:
+    handler: handler.update
+    events:
+      - http:
+          path: notes/{id}
+          method: put
+          cors: true
+          private: true
+  delete:
+    handler: handler.delete
+    events:
+      - http:
+          path: notes/{id}
+          method: delete
+          cors: true
+          private: true
+plugins:
+  - serverless-offline
