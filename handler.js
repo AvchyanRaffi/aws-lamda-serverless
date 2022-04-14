@@ -127,7 +127,6 @@ module.exports.update = async (event, context) => {
         }
 
         const newNote = await note.save();
-        console.log(newNote, 1111111)
         return {
             statusCode: 204,
             body: JSON.stringify(newNote),
